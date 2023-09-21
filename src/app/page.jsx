@@ -1,9 +1,13 @@
-import Image from 'next/image'
+import Board from '@/components/Board'
+import Navbar from '@/components/Navbar'
 
 export default function Home() {
   return (
-    <div>
-      <h1>Home</h1>
+    <div className='bg-blue-300 min-h-screen'>
+      <Navbar />
+      <main>
+        <Board />
+      </main>
     </div>
   )
 }
