@@ -37,7 +37,7 @@ export default function Home() {
               key={index}
               titleBoard={board.board_name}
               cards={board.Tasks.map((task) => ({ id: task.id, taskName: task.task_name }))}
-              boardId={board.id} // Pass the board's unique ID
+              boardId={board.id}
             />
           ))}
         </main>
