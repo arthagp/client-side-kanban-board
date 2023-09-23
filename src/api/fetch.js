@@ -83,9 +83,9 @@ const getAllTask = async (boardId) => {
     }
 }
 
-const moveTask = async () => {
+const moveTask = async ({ taskId, targetBoardId }) => {
     try {
-        const response = await instance.put('/tasks/move')
+        const response = await instance.put('/tasks/move', { taskId, targetBoardId })
         return response.data
     } catch (error) {
         throw new Error(error.response.data.message || 'Something Went Wrong')

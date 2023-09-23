@@ -26,10 +26,10 @@ const Navbar = ({ createBoard }) => {
             <h1 className='font-bold text-3xl text-white'>Boardify</h1>
             <ul className='flex justify-center gap-x-10 items-center'>
                 <li>
-                    <Link className='opacity-50 hover:opacity-80' href={'/'}>Home</Link>
+                    <Link className='opacity-80 text-white hover:opacity-100' href={'/'}>Home</Link>
                 </li>
                 <li>
-                    <Link className='opacity-50 hover:opacity-80' href={'#'}>About us</Link>
+                    <Link className='opacity-80 text-white hover:opacity-100' href={'#'}>About us</Link>
                 </li>
                 <li>
                     <button onClick={createBoard} className='bg-blue-400 hover:bg-white hover:text-gray-400 border-white border rounded-lg px-3 py-1 text-white'>Create Board</button>
