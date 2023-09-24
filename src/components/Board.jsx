@@ -1,9 +1,29 @@
 'use client'
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import Card from './Card';
+import { getAllTask, moveTask } from '@/api/fetch';
 
-const Board = ({ titleBoard, cards, boardId }) => {
+const Board = ({ titleBoard, boardId }) => {
+  const [allTasks, setAllTasks] = useState([])
+
+
+  const fetchAllTasks = async () => {
+    try {
+      const response = await getAllTask(boardId);
+      setAllTasks(response.data)
+      console.log(response.data, 'data')
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    fetchAllTasks()
+  }, [boardId])
+
+
+
   return (
     <div className='bg-slate-100 rounded-2xl text-black text-opacity-70 flex flex-col max-w-[300px] m-4 '>
       <div className='flex justify-between'>
@@ -16,23 +36,22 @@ const Board = ({ titleBoard, cards, boardId }) => {
           </button>
         </div>
       </div>
-
-      {/* Move Droppable div here */}
-      <Droppable droppableId={`dropable-${boardId}`}>
-        {(provided) => (
+      <Droppable droppableId={`dropable-${boardId}`} >
+        {(provided, snapshot) => (
           <div
             {...provided.droppableProps}
+            className={`${snapshot.isDraggingOver ? 'bg-slate-400' : null} rounded-lg`}
             ref={provided.innerRef}
           >
-            {cards.map((card, index) => (
+            {allTasks.map((card, index) => (
               <Draggable key={card.id} draggableId={`dragable-${card.id}`} index={index}>
-                {(provided) => (
+                {(provided, snapshot) => (
                   <div
                     ref={provided.innerRef}
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
                   >
-                    <Card taskName={card.taskName} />
+                    <Card taskName={card.task_name} />
                   </div>
                 )}
               </Draggable>
@@ -41,7 +60,6 @@ const Board = ({ titleBoard, cards, boardId }) => {
           </div>
         )}
       </Droppable>
-
       <div>
         <button className='m-3 hover:bg-gray-200 rounded-lg px-3 py-1 text-sm text-start w-[200px]'>
           + Add Card

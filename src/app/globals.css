@@ -2,26 +2,5 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Menghilangkan seleksi teks saat menggandeng elemen */
-.draggable {
-  user-select: none;
-}
 
-/* Memberikan bayangan atau efek visual saat elemen sedang di-drag */
-.dragging {
-  opacity: 0.7; /* Misalnya, mengurangi opacity elemen saat di-drag */
-  transform: scale(1.05); /* Memperbesar elemen saat di-drag */
-  transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
-}
 
-/* Menyembunyikan placeholder selama drag-and-drop */
-.placeholder {
-  display: none;
-}
-
-/* Memberikan gaya pada elemen yang sedang di-drop */
-.droppable {
-  background-color: #f0f0f0; /* Misalnya, mengubah warna latar belakang saat menjatuhkan elemen */
-  border: 2px dashed #999; /* Misalnya, menambahkan border dashed saat menjatuhkan elemen */
-  transition: background-color 0.2s ease-in-out, border 0.2s ease-in-out;
-}

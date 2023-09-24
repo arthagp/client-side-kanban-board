@@ -1,42 +1,57 @@
-
 'use client'
 import React, { useEffect, useState } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
 import Board from '@/components/Board';
 import Navbar from '@/components/Navbar';
-import { getAllBoard } from '@/api/fetch';
+import { getAllBoard, moveTask } from '@/api/fetch';
 
 export default function Home() {
-  const [boardsAndTask, setBoardAndTask] = useState([]);
+  const [boards, setBoards] = useState([]);
 
-  const fetchAllGetAllBoardAndTask = async () => {
+  const fetchAllGetAllBoard = async () => {
     try {
       const response = await getAllBoard();
-      setBoardAndTask(response.data);
+      setBoards(response.data);
     } catch (error) {
       console.log(error);
     }
   }
 
   useEffect(() => {
-    fetchAllGetAllBoardAndTask();
+    fetchAllGetAllBoard();
   }, []);
 
-  const onDragEnd = (result) => {
-    // Handle the card reordering here and update the state accordingly.
-    // You'll need to use the result object to get the source and destination indices.
+  const onDragEnd = async (result) => {
+    const { source, destination } = result;
+
+    if (!destination) { // jika destination undefined maka akhiri eksekusi dengan return;
+      return;
+    }
+
+    if (source.droppableId !== destination.droppableId) {
+      const targetBoardId = destination.droppableId.replace("dropable-", ""); // untuk menghilangkan string dropable- menjadi string kosong agar mendapatkan id nya langsung
+      const taskId = result.draggableId.replace("dragable-", "");
+      console.log(taskId, 'task Id :')
+      console.log(targetBoardId, 'targetBoard :')
+      console.log(destination, 'destination')
+      try {
+        await moveTask({ taskId, targetBoardId });
+        
+      } catch (error) {
+        console.error("Error moving the card:", error);
+      }
+    }
   };
 
   return (
     <div className='bg-blue-300 min-h-screen'>
-      <Navbar />
+      <Navbar/>
       <DragDropContext onDragEnd={onDragEnd}>
         <main className='grid grid-cols-4'>
-          {boardsAndTask.map((board, index) => (
+          {boards.map((board, index) => (
             <Board
               key={index}
               titleBoard={board.board_name}
-              cards={board.Tasks.map((task) => ({ id: task.id, taskName: task.task_name }))}
               boardId={board.id}
             />
           ))}

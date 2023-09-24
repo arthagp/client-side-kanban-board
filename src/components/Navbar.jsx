@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Cookies from 'js-cookie'
 
-const Navbar = ({ createBoard }) => {
+const Navbar = () => {
     const [isLogged, setIsLogged] = useState(false)
 
     const token = Cookies.get('token')
@@ -30,9 +30,6 @@ const Navbar = ({ createBoard }) => {
                 </li>
                 <li>
                     <Link className='opacity-80 text-white hover:opacity-100' href={'#'}>About us</Link>
-                </li>
-                <li>
-                    <button onClick={createBoard} className='bg-blue-400 hover:bg-white hover:text-gray-400 border-white border rounded-lg px-3 py-1 text-white'>Create Board</button>
                 </li>
                 <li>
                     <div className="border-l border-gray-500 h-6 mx-2"></div>
