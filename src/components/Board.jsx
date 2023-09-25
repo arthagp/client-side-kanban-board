@@ -2,10 +2,12 @@
 import React, { useEffect, useState } from 'react';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import Card from './Card';
-import { getAllTask, moveTask } from '@/api/fetch';
+import { getAllTask, createTask } from '@/api/fetch';
 
 const Board = ({ titleBoard, boardId }) => {
   const [allTasks, setAllTasks] = useState([])
+  const [isCreateCard, setIsCreateBoard] = useState(false)
+  const [taskName, setTaskName] = useState('')
 
 
   const fetchAllTasks = async () => {
@@ -22,7 +24,19 @@ const Board = ({ titleBoard, boardId }) => {
     fetchAllTasks()
   }, [boardId])
 
-
+  const handleCreateCard = async (e) => {
+    e.preventDefault()
+    try {
+      const response = await createTask(taskName, boardId) // taskName, boardId
+      if (response) {
+        setTaskName('')
+        setIsCreateBoard(false)
+        fetchAllTasks()
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <div className='bg-slate-100 rounded-2xl text-black text-opacity-70 flex flex-col max-w-[300px] m-4 '>
@@ -45,7 +59,7 @@ const Board = ({ titleBoard, boardId }) => {
           >
             {allTasks.map((card, index) => (
               <Draggable key={card.id} draggableId={`dragable-${card.id}`} index={index}>
-                {(provided, snapshot) => (
+                {(provided) => (
                   <div
                     ref={provided.innerRef}
                     {...provided.draggableProps}
@@ -60,10 +74,39 @@ const Board = ({ titleBoard, boardId }) => {
           </div>
         )}
       </Droppable>
+      {isCreateCard && (
+        <form onSubmit={handleCreateCard} className='flex justify-between text-center max-w-[290px] p-2 m-2 bg-white shadow-md rounded-lg '>
+          <textarea className='pl-2 w-full bg-none focus:bg-none text-gray-700 text-sm outline-none'
+            type="text"
+            placeholder='Enter Title Card..'
+            value={taskName}
+            onChange={(e) => { setTaskName(e.target.value) }}
+          />
+        </form>
+      )}
       <div>
-        <button className='m-3 hover:bg-gray-200 rounded-lg px-3 py-1 text-sm text-start w-[200px]'>
-          + Add Card
-        </button>
+        <div className='flex justify-start items-center'>
+          {isCreateCard ? (
+            <div className='flex justify-start items-center'>
+              <button
+                className='border text-sm bg-blue-400 ml-2 text-white rounded-lg py-[3px] px-3'
+                onClick={handleCreateCard}
+                type='submit'
+              >Add Card</button>
+              <button onClick={() => { setIsCreateBoard(false) }} className='m-2'>
+                <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="24" height="24" fill="none" />
+                  <path d="M7 17L16.8995 7.10051" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" />
+                  <path d="M7 7.00001L16.8995 16.8995" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </button>
+            </div>
+          ) : (
+            <button onClick={() => { setIsCreateBoard(true) }} className='m-3 hover:bg-gray-200 rounded-lg px-3 py-1 text-sm text-start w-[200px]'>
+              + Add Card
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

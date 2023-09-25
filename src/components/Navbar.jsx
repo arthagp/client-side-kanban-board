@@ -38,7 +38,7 @@ const Navbar = () => {
                     {isLogged ? (
                         <Link onClick={handleLogout} className='hover:bg-blue-400 hover:text-white border border-white-400 text-white px-4 py-[4px] rounded-lg' href={'/login'}>Logout</Link>
                     ) : (
-                        <Link className='hover:bg-white hover:text-white border border-yellow-400 text-yellow-500 px-4 py-[4px]' href={'/login'}>Login</Link>
+                        <Link className='hover:bg-blue-400 hover:text-white border border-white-400 text-white px-4 py-[4px] rounded-lg' href={'/login'}>Login</Link>
                     )}
                 </li>
 
